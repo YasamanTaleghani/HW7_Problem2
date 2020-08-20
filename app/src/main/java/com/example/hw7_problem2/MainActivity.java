@@ -1,23 +1,20 @@
 package com.example.hw7_problem2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView mRedTextView;
-    TextView mOrangeTextView;
-    TextView mYellowTextView;
-    TextView mGreenTextView;
-    TextView mBlueTextView;
-    TextView mIndigoTextView;
-    TextView mVioletTextView;
-
+    public static final String BUNDLE_IS_CLICKED = "BUndleIsClicked";
+    TextView[] mTextViews = new TextView[7];
+    int[] mColor = new int[]{R.color.Red, R.color.Orange, R.color.Yellow, R.color.Green,
+            R.color.Blue, R.color.Indigo, R.color.Violet};
+    boolean[] mIsClicked = new boolean[7];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,246 +24,61 @@ public class MainActivity extends AppCompatActivity {
         findViewMethod();
         setListeners();
 
+        if (savedInstanceState!=null){
+            mIsClicked = savedInstanceState.getBooleanArray(BUNDLE_IS_CLICKED);
+            for (int i = 0; i < 7 ; i++) {
+                if (mIsClicked[i]){
+                    mTextViews[i].setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+
     }
 
     protected void findViewMethod() {
-        mRedTextView = findViewById(R.id.RedtextView);
-        mOrangeTextView = findViewById(R.id.OrangeTextView);
-        mYellowTextView = findViewById(R.id.YellowTextView);
-        mGreenTextView = findViewById(R.id.GreenTextView);
-        mBlueTextView = findViewById(R.id.BlueTextView);
-        mIndigoTextView = findViewById(R.id.IndigoTextView);
-        mVioletTextView = findViewById(R.id.VioletTextView);
+
+        mTextViews = new TextView[]{findViewById(R.id.RedtextView),
+                findViewById(R.id.OrangeTextView), findViewById(R.id.YellowTextView) ,
+                findViewById(R.id.GreenTextView), findViewById(R.id.BlueTextView) ,
+                findViewById(R.id.IndigoTextView), findViewById(R.id.VioletTextView)};
+
     }
 
     protected void setListeners() {
 
-        mRedTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRedTextView.setVisibility(View.INVISIBLE);
-                mOrangeTextView.setTextColor(Color.RED);
-                mYellowTextView.setTextColor(Color.RED);
-                mGreenTextView.setTextColor(Color.RED);
-                mBlueTextView.setTextColor(Color.RED);
-                mIndigoTextView.setTextColor(Color.RED);
-                mVioletTextView.setTextColor(Color.RED);
+        for (int i = 0; i < 7 ; i++) {
+            final int finalI = i;
+            mTextViews[finalI].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mIsClicked[finalI] = true;
 
-                mRedTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
+                    for (int j = 0; j < 7 ; j++) {
+                        if (j==finalI){
+                            mTextViews[j].setVisibility(View.INVISIBLE);
+                        } else{
+                            mTextViews[j].setTextColor(getResources().getColor(mColor[finalI]));
+                        }
                     }
-                }, 5000);
-            }
-        });
 
-        mOrangeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mOrangeTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.parseColor("#FF7417"));
-                mYellowTextView.setTextColor(Color.parseColor("#FF7417"));
-                mGreenTextView.setTextColor(Color.parseColor("#FF7417"));
-                mBlueTextView.setTextColor(Color.parseColor("#FF7417"));
-                mIndigoTextView.setTextColor(Color.parseColor("#FF7417"));
-                mVioletTextView.setTextColor(Color.parseColor("#FF7417"));
+                    mTextViews[finalI].postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int j = 0; j < 7 ; j++) {
+                                if (j!=finalI){
+                                    mTextViews[j].setTextColor(Color.BLACK);
+                                }
+                            }
+                        }
+                    }, 5000);
+                }
+            });
+        }
+    }
 
-                mOrangeTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
-        mYellowTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mYellowTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.YELLOW);
-                mOrangeTextView.setTextColor(Color.YELLOW);
-                mGreenTextView.setTextColor(Color.YELLOW);
-                mBlueTextView.setTextColor(Color.YELLOW);
-                mIndigoTextView.setTextColor(Color.YELLOW);
-                mVioletTextView.setTextColor(Color.YELLOW);
-
-                mYellowTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
-        mGreenTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGreenTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.GREEN);
-                mOrangeTextView.setTextColor(Color.GREEN);
-                mYellowTextView.setTextColor(Color.GREEN);
-                mBlueTextView.setTextColor(Color.GREEN);
-                mIndigoTextView.setTextColor(Color.GREEN);
-                mVioletTextView.setTextColor(Color.GREEN);
-
-                mGreenTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-
-            }
-        });
-
-        mBlueTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBlueTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.BLUE);
-                mOrangeTextView.setTextColor(Color.BLUE);
-                mYellowTextView.setTextColor(Color.BLUE);
-                mGreenTextView.setTextColor(Color.BLUE);
-                mIndigoTextView.setTextColor(Color.BLUE);
-                mVioletTextView.setTextColor(Color.BLUE);
-
-                mBlueTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
-        mGreenTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGreenTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.GREEN);
-                mOrangeTextView.setTextColor(Color.GREEN);
-                mYellowTextView.setTextColor(Color.GREEN);
-                mBlueTextView.setTextColor(Color.GREEN);
-                mIndigoTextView.setTextColor(Color.GREEN);
-                mVioletTextView.setTextColor(Color.GREEN);
-
-                mGreenTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-
-            }
-        });
-
-        mBlueTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBlueTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.BLUE);
-                mOrangeTextView.setTextColor(Color.BLUE);
-                mYellowTextView.setTextColor(Color.BLUE);
-                mGreenTextView.setTextColor(Color.BLUE);
-                mIndigoTextView.setTextColor(Color.BLUE);
-                mVioletTextView.setTextColor(Color.BLUE);
-
-                mBlueTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
-        mIndigoTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIndigoTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.parseColor("#810288"));
-                mOrangeTextView.setTextColor(Color.parseColor("#810288"));
-                mYellowTextView.setTextColor(Color.parseColor("#810288"));
-                mGreenTextView.setTextColor(Color.parseColor("#810288"));
-                mBlueTextView.setTextColor(Color.parseColor("#810288"));
-                mVioletTextView.setTextColor(Color.parseColor("#810288"));
-
-                mIndigoTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mVioletTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
-        mVioletTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mVioletTextView.setVisibility(View.INVISIBLE);
-                mRedTextView.setTextColor(Color.parseColor("#E81FD2"));
-                mOrangeTextView.setTextColor(Color.parseColor("#E81FD2"));
-                mYellowTextView.setTextColor(Color.parseColor("#E81FD2"));
-                mGreenTextView.setTextColor(Color.parseColor("#E81FD2"));
-                mBlueTextView.setTextColor(Color.parseColor("#E81FD2"));
-                mVioletTextView.setTextColor(Color.parseColor("#E81FD2"));
-
-                mVioletTextView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRedTextView.setTextColor(Color.BLACK);
-                        mOrangeTextView.setTextColor(Color.BLACK);
-                        mYellowTextView.setTextColor(Color.BLACK);
-                        mGreenTextView.setTextColor(Color.BLACK);
-                        mBlueTextView.setTextColor(Color.BLACK);
-                        mIndigoTextView.setTextColor(Color.BLACK);
-                    }
-                }, 5000);
-            }
-        });
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBooleanArray(BUNDLE_IS_CLICKED, mIsClicked);
     }
 }
